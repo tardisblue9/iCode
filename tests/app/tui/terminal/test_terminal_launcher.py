@@ -19,9 +19,26 @@ from chrys.app.tui.terminal.launcher import (
     is_remote_execution_environment,
     is_remote_ssh_session,
 )
+from chrys.foundation import guard
 from chrys.foundation.branding import APP_DISPLAY_NAME
 from chrys.foundation.i18n import Localizer
 from chrys.foundation.i18n.formatting import format_message
+
+
+@pytest.fixture(autouse=True)
+def _sandbox_not_requested(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The argv these tests pin is the one a process without the sandbox builds."""
+    monkeypatch.setattr(guard, "status", lambda: guard.GuardStatus(state="inactive", requested=False))
+
+
+def test_a_sandboxed_window_opens_a_sandboxed_window(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(guard, "status", lambda: guard.GuardStatus(state="active", requested=True))
+    argv = build_chrys_tui_argv("session-1")
+    assert argv[-3:] == ["--session", "session-1", "--sandbox"]
+    # The flag survives dispatch: the new process strips it before routing the TUI subcommand.
+    rest, decision = guard.decide(argv[argv.index("--session") - 1 :], launcher.Path("/nonexistent"), env={})
+    assert decision.enabled is True and rest[0] == launcher._TUI_SUBPROCESS_COMMAND
+
 
 _MACOS_WINDOW_SERVER_PROBE = launcher._macos_window_server_session_is_available
 _WINDOWS_DESKTOP_PROBE = launcher._windows_desktop_shell_is_visible

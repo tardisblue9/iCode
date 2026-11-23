@@ -619,14 +619,24 @@ class RollbackController:
                     # can only be derived from this pre-built list afterwards.
                     plan_candidates = [path for path, _ in plan.entries] + [path for path, _ in plan.exclusions]
 
+                    from chrys.foundation import guard
+
+                    workspace = self._session.workspace
+                    rollback_roots = (
+                        [workspace.primary_cwd, *(wd.path for wd in workspace.working_dirs)] if workspace else []
+                    )
+                    rollback_session_id = self._session.session_id
+
                     def _apply_file_rollback() -> None:
                         nonlocal restore_results
                         try:
-                            restore_results = tracker.rollback_turns(
-                                rollback_turn_ids,
-                                only_paths=only_paths,
-                                plan=plan,
-                            )
+                            # Under the sandbox, as the tool calls that made these changes were.
+                            with guard.current().session_scope(rollback_session_id, rollback_roots, workspace_cwd):
+                                restore_results = tracker.rollback_turns(
+                                    rollback_turn_ids,
+                                    only_paths=only_paths,
+                                    plan=plan,
+                                )
                         except Exception:
                             logger.exception("Rollback file-restore failed (target_turn=%d)", target_turn)
                             restore_results = []

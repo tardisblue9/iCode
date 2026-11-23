@@ -7,7 +7,7 @@ from __future__ import annotations
 import asyncio
 from bisect import bisect_right
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 import pytest
 from rich.cells import chop_cells
@@ -17,7 +17,7 @@ from textual.geometry import Offset, Region
 from textual.screen import ModalScreen
 from textual.selection import SELECT_ALL, Selection
 from textual.widget import Widget
-from textual.widgets import Button, Static
+from textual.widgets import Button, Checkbox, RadioButton, Static
 
 from chrys.app.tui.clipboard import wait_for_clipboard
 from chrys.app.tui.screens.dialogs.approval import ApprovalDialog
@@ -1487,3 +1487,46 @@ async def test_approval_dialog_reason_newline_keeps_cursor_visible_after_height_
         cursor_y = input_area.cursor_location[0]
         scroll_y = round(input_area.scroll_y)
         assert scroll_y <= cursor_y < scroll_y + input_area.content_size.height
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("kind", "offer_kind", "title", "reuse", "workdir_offered"),
+    [
+        ("sandbox.read", "read_folder", "Read outside the workspace", "read in this folder", True),
+        ("sandbox.write", "write_folder", "Write outside the workspace", "write in this folder", False),
+    ],
+)
+async def test_sandbox_grant_dialog_says_which_access_and_how_long(
+    kind: str, offer_kind: Literal["read_folder", "write_folder"], title: str, reuse: str, workdir_offered: bool
+) -> None:
+    """A write grant is asked for as one, and can't be remembered beyond the session."""
+    dialog = ApprovalDialog(
+        caller_name="",
+        tool_name="write_file",
+        tool_kind=kind,
+        presentation_kind=kind,
+        args={"path": "/x/y", "tool": "write_file"},
+        reuse_offer=ApprovalReuseOffer(kind=offer_kind, targets=("/x",)),
+    )
+
+    class TestApp(App):
+        def compose(self) -> ComposeResult:
+            yield Static("placeholder")
+
+    app = TestApp()
+    async with app.run_test(size=(120, 50)) as pilot:
+        await app.push_screen(dialog)
+        await pilot.pause()
+        remember = dialog.query_one("#reuse-remember", Checkbox)
+        assert reuse in str(remember.label)
+        rendered = "\n".join(str(widget.render()) for widget in dialog.query(Static))
+        assert title in rendered or title in str(dialog.query_one("#approval-container").border_title)
+        assert bool(dialog.query("#reuse-workdir")) is workdir_offered
+        assert dialog.query_one("#reuse-turn", RadioButton).value is True
+        remember.value = True
+        await pilot.pause()
+        assert dialog.remember_choice == "" and dialog._selected_reuse_choice() == "EXACT_TURN"
+        dialog.query_one("#reuse-session", RadioButton).value = True
+        await pilot.pause()
+        assert dialog._selected_reuse_choice() == "EXACT_SESSION"

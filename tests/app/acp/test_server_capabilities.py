@@ -102,3 +102,21 @@ class _DeclaringManager:
 
     def get(self, session_id: str) -> None:
         raise AssertionError("initialize must not resolve a session")
+
+
+async def test_initialize_reports_the_process_guard(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The client learns whether this server runs under the file-access sandbox."""
+    from chrys.foundation import guard
+
+    status = guard.GuardStatus(state="active", requested=True, mechanism="Seatbelt")
+    monkeypatch.setattr(guard, "_current", guard._NoGuard(status))
+    server = server_module.ChrysAcpServer(_DeclaringManager(), initial_vision=False)  # type: ignore[arg-type]
+
+    response = await server.initialize(protocol_version=1, client_capabilities=None, client_info=None)
+
+    assert response.agent_capabilities.field_meta["chrys"]["sandbox"] == {
+        "state": "active",
+        "requested": True,
+        "mechanism": "Seatbelt",
+        "reasons": [],
+    }

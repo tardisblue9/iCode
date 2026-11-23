@@ -160,6 +160,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Start the TUI with the given active model profile id or name",
     )
     tui_options.add_argument("-C", "--workdir", metavar="DIR", help="Start the TUI in the given working directory")
+    from chrys.foundation import guard
+
+    if guard.installed():  # offered only when it can work: without the package, --sandbox refuses to start
+        tui_options.add_argument(
+            "--sandbox",
+            action="store_true",
+            help="Confine file reads to the workspace and granted folders for this run (also: CHRYS_FILE_SANDBOX=1)",
+        )
+        tui_options.add_argument(
+            "--no-sandbox", action="store_true", help="Run without the file-access sandbox this time"
+        )
 
     commands = parser.add_argument_group("commands")
     commands.add_argument(
@@ -171,9 +182,38 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+_SANDBOXED_COMMANDS: Final = frozenset({"run", "acp", "workflow", "workflows", _TUI_SUBPROCESS_COMMAND})
+_UNSANDBOXED_COMMANDS: Final = frozenset(
+    {"agent", "agents", "model", "models", "approval", "approvals", "hook", "hooks", "install", "uninstall"}
+    | {"serve", "trajectory", "trajectories", "sandbox"}
+)
+
+
+def _enable_sandbox(argv: list[str]) -> list[str]:
+    """Enable the file-access sandbox for commands that run an agent; strip its flags.
+
+    Runs before anything else in the process — the sandbox confines only
+    threads started after it — and decides once: see ``foundation/guard.py``.
+    """
+    command = argv[0] if argv else ""
+    if command in _UNSANDBOXED_COMMANDS or argv in (["--version"], ["-v"], ["--help"], ["-h"]):
+        from chrys.foundation.guard import strip_flags
+
+        return strip_flags(argv)[0]
+    # _SANDBOXED_COMMANDS and anything else (passed to the TUI) are confined.
+    from chrys.foundation.guard import install_at_startup
+
+    rest, _status = install_at_startup(argv)
+    return rest
+
+
 def main() -> int:
     """Dispatch ``chrys`` entrypoint modes."""
-    argv = sys.argv[1:]
+    argv = _enable_sandbox(sys.argv[1:])
+    if argv and argv[0] == "sandbox":
+        from chrys.foundation import guard
+
+        return guard.cli(argv[1:])
     if argv and argv[0] == _TUI_SUBPROCESS_COMMAND:
         return _run_tui(argv[1:])
     if argv in (["--version"], ["-v"]):
