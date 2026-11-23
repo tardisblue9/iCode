@@ -2,6 +2,12 @@ version = 1
 revision = 5
 requires-python = ">=3.14"
 
+[manifest]
+members = [
+    "icode-sandbox",
+    "icode-tui",
+]
+
 [[package]]
 name = "agent-client-protocol"
 version = "0.10.1"
@@ -638,6 +644,11 @@ wheels = [
 ]
 
 [[package]]
+name = "icode-sandbox"
+version = "0.1.0"
+source = { editable = "packages/icode-sandbox" }
+
+[[package]]
 name = "icode-tui"
 version = "0.36.0"
 source = { editable = "." }
@@ -677,6 +688,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "babel" },
+    { name = "icode-sandbox" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -724,6 +736,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "babel", specifier = "==2.18.0" },
+    { name = "icode-sandbox", editable = "packages/icode-sandbox" },
     { name = "pre-commit", specifier = ">=4.7.0" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "pytest-asyncio", specifier = "==1.4.0" },

@@ -58,3 +58,4 @@ src/chrys/foundation/i18n/_catalogs/
 .aider*
 .copilot
 .chrys
+.sbtest/

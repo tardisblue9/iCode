@@ -277,11 +277,19 @@ REGULAR_RULES = (
             "src/chrys/app/tui/screens/dialogs/editor.py",
         ),
     ),
+    # Sandbox guards that scan the source rather than import it.
+    TestRule("tests/foundation/sandbox/test_tool_coverage.py", ("src/chrys/**",)),
+    TestRule("tests/foundation/sandbox/test_rollback_entry_points.py", ("src/chrys/**",)),
+    TestRule("tests/foundation/sandbox/test_spawn_sites.py", ("src/chrys/**", "packages/icode-sandbox/src/**")),
+    TestRule("tests/foundation/sandbox/test_settings_reload.py", ("packages/icode-sandbox/src/**",)),
+    TestRule("tests/foundation/sandbox/test_no_fallback.py", ("packages/icode-sandbox/src/**",)),
     # A fresh `icode run` turn, checked for what the sandbox would touch: the CLI, the tools and approval it drives.
     TestRule(
         "tests/foundation/test_guard.py",
         ("src/chrys/app/cli/**", "src/chrys/service/agent_middleware/control/**", "src/chrys/service/tools/**"),
     ),
+    # The sandbox package lives outside src/: its tests are selected by path, not through the import graph.
+    TestRule("tests/foundation/sandbox", ("packages/icode-sandbox/src/**",)),
 )
 
 # Include every pytest configuration filename, even when absent from this tree:

@@ -96,7 +96,11 @@ cache-keys = [
     { dir = "src/chrys/foundation/i18n/_catalogs" },
 ]
 
+[tool.uv.workspace]
+members = ["packages/icode-sandbox"]
+
 [tool.uv.sources]
+icode-sandbox = { workspace = true }
 #rich = { path = "../rich", editable = true }
 #textual = { path = "../textual", editable = true }
 
@@ -119,6 +123,9 @@ dev = [
     "ty==0.0.89",
     "pre-commit>=4.7.0",
     "pytest-cov>=7.1.0",
+    # The file-access sandbox (packages/icode-sandbox), from this workspace: a distribution of its own,
+    # which iCode loads only when the sandbox is turned on. Not a runtime dependency of icode-tui.
+    "icode-sandbox",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -172,7 +179,7 @@ markers = [
 [tool.ruff]
 target-version = "py314"
 line-length = 120
-src = ["src", "tests"]
+src = ["src", "tests", "packages/icode-sandbox/src"]
 fix = true
 
 [tool.ruff.per-file-target-version]
@@ -221,6 +228,11 @@ ignore = [
 "playground/*" = ["RUF001", "RUF012"]
 # Platform utilities — subprocess calls to system tools are safe
 "src/chrys/foundation/platform/__init__.py" = ["S603", "S607", "PLW1510"]
+# Sandbox runtime — starts its own confined processes from fixed argv; exec is the trampoline's job
+"packages/icode-sandbox/src/icode_sandbox/runtime/*" = ["S603", "S606"]
+"packages/icode-sandbox/src/icode_sandbox/*" = ["S603", "S606"]
+# Sandbox CLI — print is its output
+"packages/icode-sandbox/src/icode_sandbox/cli.py" = ["T20", "S603"]
 # Installer CLI — print is correct output, subprocess calls are platform setup
 "src/chrys/app/installer.py" = ["T20", "S603", "S607", "PLW1510"]
 # Wheel check — prints its progress and runs uv, git and the installed commands
@@ -255,6 +267,23 @@ include = ["src/chrys/foundation/patches/*.py"]
 [tool.ty.overrides.rules]
 unresolved-attribute = "ignore"
 invalid-assignment = "ignore"
+
+# The sandbox's process hooks replace stdlib callables (open, os.open, listdir,
+# Popen._execute_child) wholesale — the essence of the file, as for the patches above.
+[[tool.ty.overrides]]
+include = ["packages/icode-sandbox/src/icode_sandbox/patches.py"]
+
+[tool.ty.overrides.rules]
+unresolved-attribute = "ignore"
+invalid-assignment = "ignore"
+
+# Standalone sandbox processes (``python -I -S <script>``) import their sibling
+# ``confine`` module by path, not through the chrys package.
+[[tool.ty.overrides]]
+include = ["packages/icode-sandbox/src/icode_sandbox/runtime/broker.py", "packages/icode-sandbox/src/icode_sandbox/runtime/helper.py", "packages/icode-sandbox/src/icode_sandbox/runtime/stub.py", "packages/icode-sandbox/src/icode_sandbox/runtime/trampoline.py"]
+
+[tool.ty.overrides.rules]
+unresolved-import = "ignore"
 
 # The tab-selection patch constructs _FormattedLine with parameters the patch itself
 # provides at runtime; stock textual's types cannot see them.

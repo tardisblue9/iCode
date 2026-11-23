@@ -64,6 +64,8 @@ PSEUDO_CATALOG_LOCALE = "en_XA"
 ZH_HANS_LOCALE = "zh_Hans"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = REPO_ROOT / "src" / "chrys"
+# Workspace packages that ship user-facing text in the same catalog (the file-access sandbox).
+EXTRA_SOURCE_ROOTS = (REPO_ROOT / "packages" / "icode-sandbox" / "src" / "icode_sandbox",)
 POT_PATH = REPO_ROOT / "locales" / f"{DOMAIN}.pot"
 ZH_PO_PATH = REPO_ROOT / "locales" / "zh-Hans" / "LC_MESSAGES" / f"{DOMAIN}.po"
 ZH_MO_PATH = REPO_ROOT / SOURCE_MO_PATH
@@ -185,8 +187,12 @@ def extract_messages(
     if location_root is None:
         location_root = REPO_ROOT if source_root.resolve() == SOURCE_ROOT.resolve() else source_root
 
+    paths = sorted(source_root.rglob("*.py"))
+    if source_root.resolve() == SOURCE_ROOT.resolve():
+        for extra in EXTRA_SOURCE_ROOTS:
+            paths += sorted(extra.rglob("*.py")) if extra.is_dir() else []
     parsed: list[ExtractedMessage] = []
-    for path in sorted(source_root.rglob("*.py")):
+    for path in paths:
         try:
             source = path.read_text(encoding="utf-8")
             if not _may_name_msg(source):

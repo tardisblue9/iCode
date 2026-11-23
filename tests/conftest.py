@@ -16,6 +16,7 @@ import shutil
 import socket
 import ssl
 import subprocess
+import sys
 import tempfile
 import warnings
 from collections.abc import AsyncIterator, Callable, Iterator
@@ -65,6 +66,19 @@ from tests.support.network_guard import (
 from tests.support.quarantine import apply_quarantine_markers, enforce_quarantine_problem
 from tests.support.stall_diagnostics import StallSampler, start_stall_sampler_from_environment
 from tests.support.waiting import ENGINE_TURN_TIMEOUT
+
+
+def _sandbox_package_installed() -> bool:
+    import importlib.util
+
+    return importlib.util.find_spec("icode_sandbox") is not None
+
+
+if not _sandbox_package_installed() or sys.platform == "win32":
+    # The file-access sandbox is its own distribution (packages/icode-sandbox): without it
+    # these tests have nothing to run against, and iCode must behave as upstream does.
+    # It has no Windows backend: there its runtime (fcntl, symlinks, Seatbelt/Landlock) isn't there either.
+    collect_ignore_glob = ["foundation/sandbox", "app/tui/screens/main/test_sandbox_indicator_flow.py"]
 
 if TYPE_CHECKING:
     from tests.support.notifications import RecordingNotificationDriver
@@ -288,6 +302,10 @@ def pytest_configure(config: pytest.Config) -> None:
     leak guard above snapshots the environment before the first fixture runs
     and would restore whatever a fixture removed.
     """
+    from tests.support import sandbox_harness
+
+    if sandbox_harness.wanted(config):
+        sandbox_harness.confine_this_process()
     _arm_config_dir_redirect()
 
     from chrys.foundation.config.process_env import canonical_env_name

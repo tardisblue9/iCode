@@ -11044,6 +11044,176 @@ msgstr ""
 msgid "tui.runtime_details.tools"
 msgstr ""
 
+#. English: Additional working folders
+#. chrys-meta={"fingerprint":"e47b400a1207d132770df73ca6b34200ae8da45c142b2df770a70a934112d05f","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.additional"
+msgstr ""
+
+#. English: Never granted
+#. chrys-meta={"fingerprint":"c2e4e08fec4560cb2784335c3e3f48227ba9b5447316a54e453b87167e1328ab","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.floor"
+msgstr ""
+
+#. English: {kind} {path} (since {when})
+#. chrys-meta={"fingerprint":"f2e4c5c296244293099ddfb4647ebeb3c0873bf235298eb540b20324de913ba5","multiline":false,"placeholders":["kind","path","when"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.grant_row"
+msgstr ""
+
+#. English: {kind}, can write: {path} (since {when})
+#. chrys-meta={"fingerprint":"11a3ecd4c6687c9109e5078442663542cc931e77be07db2ca560f06d52f82e36","multiline":false,"placeholders":["kind","path","when"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.grant_write_row"
+msgstr ""
+
+#. English: Grants
+#. chrys-meta={"fingerprint":"34c1375846d2607862c36f5c4debbd5f8de17b2a1fb0ab52e38a4b7649c59b71","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.grants"
+msgstr ""
+
+#. English: 🛡
+#. chrys-meta={"fingerprint":"f67703b76f26ff71091ef8c2039b03d76dee08d23db5b2ba51a1b95712864e62","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/indicator.py
+msgid "tui.sandbox.indicator.active"
+msgstr ""
+
+#. English: 🛡 Sandbox: degraded
+#. chrys-meta={"fingerprint":"75a7cd42cf875eee126d4f52ab4ab042bec0004b7d2b1d5a25200017d5eeb869","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/indicator.py
+msgid "tui.sandbox.indicator.degraded"
+msgstr ""
+
+#. English: ⚠ Sandbox NOT active
+#. chrys-meta={"fingerprint":"a905410d53795fcb82bc49f6fee2a8bd94e8002bb7c01453cbd90cd0c92dc62c","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/indicator.py
+msgid "tui.sandbox.indicator.off"
+msgstr ""
+
+#. English: Click for details and grants.
+#. chrys-meta={"fingerprint":"b7542e04745ec22ca2e4619d38c7ec2ef95f0da1bd694a7fd3c9e1c9d9f940b5","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/indicator.py
+msgid "tui.sandbox.indicator.tooltip_hint"
+msgstr ""
+
+#. English: File-access sandbox: {state} ({mechanism})
+#. chrys-meta={"fingerprint":"8fcacb3759952ceef1d168bc46e891f214e7f41731b887d2d7ab1e86ca6dcaba","multiline":false,"placeholders":["mechanism","state"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/indicator.py
+msgid "tui.sandbox.indicator.tooltip_state"
+msgstr ""
+
+#. English: Once
+#. chrys-meta={"fingerprint":"1ae8e00bab07e720ed5641e0a0ee7510f53d724c117fc824416430810d97d0a2","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.kind.once"
+msgstr ""
+
+#. English: This session
+#. chrys-meta={"fingerprint":"12b3b02a90d375bfcac56fa2e2e2480dfaa6d8b3403623740039d86b07fad1d9","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.kind.session"
+msgstr ""
+
+#. English: This turn
+#. chrys-meta={"fingerprint":"823faa63bd722780fe8c6c7105372225e699fa2c9d9d4f65f235eb6aa429d519","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.kind.turn"
+msgstr ""
+
+#. English: This working directory
+#. chrys-meta={"fingerprint":"73c1f271073a585f6a3e9402b7d4c55df975c62b4134f1d5bee46765a7f051aa","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.kind.workdir"
+msgstr ""
+
+#. English: {app} itself may read
+#. chrys-meta={"fingerprint":"b0868d24f474d72fe0422e575f5528597061d5bb998758aca60e6a7ce7d41935","multiline":false,"placeholders":["app"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.main_allow"
+msgstr ""
+
+#. English: no backend
+#. chrys-meta={"fingerprint":"df207facd08484380f8d105946f28771ba18cb60d7d9e5a4698af6dd0f747972","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.no_backend"
+msgstr ""
+
+#. English: (none)
+#. chrys-meta={"fingerprint":"4d78877441b22277abed2738d3fc73346d1ea68c4222f97c88114191429fd144","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.none"
+msgstr ""
+
+#. English: This process is not confined. Start {app} with --sandbox, or turn
+#. on the sandbox in Settings, to enable it.
+#. chrys-meta={"fingerprint":"6d3c14b1bb80486c96e069f8e133f806fb6affe96969de85ddb6cb1a55c62913","multiline":false,"placeholders":["app"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.not_confined"
+msgstr ""
+
+#. English: Private (unreadable except below)
+#. chrys-meta={"fingerprint":"a7ccad96b8b1effacc6fac1a8a86bd25a3e47dc608aa75fbc8cb337e20047ea8","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.private_roots"
+msgstr ""
+
+#. English: Recent refusals
+#. chrys-meta={"fingerprint":"653dcf24cd575555a14d9cf670fe8996ac8f37a4bee5e5fcba54652808343381","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.refusals"
+msgstr ""
+
+#. English: Outcomes: refused (nobody could be asked), declined (you said no),
+#. granted, protected (never grantable).
+#. chrys-meta={"fingerprint":"8ebdb65ae5bc267f4db1665ad6f43f66fa58dcc1055ba55816bf57efaaad875b","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.refusals_hint"
+msgstr ""
+
+#. English: Revoke
+#. chrys-meta={"fingerprint":"2f521a3fe3425cb40a22a726ddc3229e8f35c52ec9e7cd72e8ad7fe7aefc63bc","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.revoke"
+msgstr ""
+
+#. English: Self-check: {result}
+#. chrys-meta={"fingerprint":"bcd138f6b459ebed24216345a0ea036c131416366ad143fe6906089f0360ee48","multiline":false,"placeholders":["result"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.self_check"
+msgstr ""
+
+#. English: Workspaces served
+#. chrys-meta={"fingerprint":"b8fda9ebe4768e7b05bf2800e5e46cdec025efe2afa9c75565b3b6c271bb4917","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.served"
+msgstr ""
+
+#. English: Session {session}
+#. chrys-meta={"fingerprint":"2cd9060a64c5067eb28c468b1531dc99472ac42bc1d522dbe5b561617e919feb","multiline":false,"placeholders":["session"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.session"
+msgstr ""
+
+#. English: State: {state} ({mechanism})
+#. chrys-meta={"fingerprint":"132db361dfd80d365bd6996f0cfb2f2e3e00cf2d80ed99a9901f21a9f05bcbdc","multiline":false,"placeholders":["mechanism","state"]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.state"
+msgstr ""
+
+#. English: File-access sandbox
+#. chrys-meta={"fingerprint":"0c6a5601f95b1d7b47d291ef62475982bdda4e579b1e1d63a7f5bb8f402fac08","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.title"
+msgstr ""
+
+#. English: Working folders
+#. chrys-meta={"fingerprint":"bf2720ec32f7f80215e0e9bd0a9645baeb6e79358c2953ddeee1bfe12e5518d4","multiline":false,"placeholders":[]}
+#: packages/icode-sandbox/src/icode_sandbox/tui/panel.py
+msgid "tui.sandbox.workspace"
+msgstr ""
+
 #. English: The current session was kept: {message}
 #. chrys-meta={"fingerprint":"3d0817d72d88d949a1b2c3814885f49c9ab1cc85312820aaccabb52266ad70c8","multiline":false,"placeholders":["message"]}
 #: src/chrys/app/tui/screens/main/session_handlers.py

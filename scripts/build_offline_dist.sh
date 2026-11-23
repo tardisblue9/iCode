@@ -134,7 +134,8 @@ echo "==> Base distribution: CPython $PY_VERSION"
 # --locked fails the build on a stale lock instead of silently bundling a
 # resolution nobody reviewed.
 REQUIREMENTS="$WORK_DIR/requirements.txt"
-EXPORT_ARGS=(--locked --no-dev --no-emit-project --format requirements-txt)
+# Workspace members (the sandbox package) install from source below, not as editable paths.
+EXPORT_ARGS=(--locked --no-dev --no-emit-project --no-emit-workspace --format requirements-txt)
 
 echo "==> Exporting locked dependencies..."
 uv export "${EXPORT_ARGS[@]}" -o "$(native_path "$REQUIREMENTS")" --quiet
@@ -261,6 +262,10 @@ echo "==> Installing chrys..."
 CHRYS_SOURCE="${WHEEL:-$PROJECT_ROOT}"
 uv pip install --python "$(native_path "$PY")" --no-deps --compile-bytecode \
     "$(native_path "$CHRYS_SOURCE")" --quiet
+
+echo "==> Installing the file-access sandbox..."
+uv pip install --python "$(native_path "$PY")" --no-deps --compile-bytecode \
+    "$(native_path "$PROJECT_ROOT/packages/icode-sandbox")" --quiet
 
 # ── Prune ─────────────────────────────────────────────────────────────
 # Pruning runs before verification so the verify step vouches for exactly what
