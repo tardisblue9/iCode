@@ -1,0 +1,13 @@
+# Fork trial only, never upstream: runs upstream's CI unchanged on a push to a ci/ branch.
+name: CI (fork trial)
+
+on:
+  push:
+    branches: ["ci/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
