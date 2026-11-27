@@ -1,0 +1,10 @@
+# Fork trial only. Exclude this file from the official PR branch.
+name: CI (fork trial)
+on:
+  push:
+    branches: ["ci/**"]
+permissions:
+  contents: read
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
